@@ -1,0 +1,177 @@
+<html>
+
+<head>
+    <title>RSA Encryption</title>
+    <meta name="viewport" content="width=device-width">
+</head>
+
+<body>
+    <h1 style="text-align: center;">RSA Algorithm</h1>
+    <hr>
+    <table class="center">
+        <tr>
+            <td>Enter P:</td>
+            <td><input type="number" value="7" id="p"></td>
+        </tr>
+        <tr>
+            <td>Enter Q :</td>
+            <td><input type="number" value="11" id="q"></p>
+            </td>
+        </tr>
+        <tr>
+            <td>Enter the Message:<br></td>
+            <td><input type="number" value="9" id="msg"></p>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Public Key(N):</td>
+            <td>
+                <p id="publickey(N)"></p>
+            </td>
+        </tr>
+        <tr>
+            <td>Exponent(e):</td>
+            <td>
+                <p id="exponent(e)"></p>
+            </td>
+        </tr>
+        <tr>
+            <td>Private Key(d):</td>
+            <td>
+                <p id="privatekey(d)"></p>
+            </td>
+        </tr>
+        <tr>
+            <td>Cipher Text(c):</td>
+            <td>
+                <p id="ciphertext(ct)"></p>
+            </td>
+        </tr>
+        <tr>
+            <td><button onclick="RSA();">Apply RSA</button></td>
+        </tr>
+
+        <tr>
+            
+            <td>Enter D:</td>
+            <td><input type="number" value="43" id="dd"></td>
+        </tr>
+        <tr>
+            <td>Enter N :</td>
+            <td><input type="number" value="77" id="nn"></p>
+            </td>
+        </tr>
+        <tr>
+            <td>Enter the Message:<br></td>
+            <td><input type="number" value="00000" id="msgs"></p>
+            </td>
+        </tr>
+
+        <td>Descipher Text(c):</td>
+        <td>
+            <p id="Deciphertext(ct)"></p>
+        </td>
+        <tr>
+            <td><button onclick="DEC();">Apply DEC</button></td>
+        </tr>
+
+
+
+    </table>
+
+</body>
+<style>
+    .center {
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+<script type="text/javascript">
+
+    var cadena=[];
+    function PowerMod(x, p, N)    // Compute x^p mod N
+    {
+        var A = 1
+        var m = p
+        var t = x
+
+        while (m > 0) {
+            k = Math.floor(m / 2)
+            r = m - 2 * k
+            if (r == 1)
+                A = (A * t) % N
+            t = (t * t) % N
+            m = k
+        }
+        return A
+    }
+
+    function RSA() {
+        var gcd, p, q, no, n, t, e, i, x;
+        gcd = function (a, b) { return (!b) ? a : gcd(b, a % b); };
+        p = document.getElementById('p').value;
+        q = document.getElementById('q').value;
+        no = document.getElementById('msg').value;
+        n = p * q;
+        t = (p - 1) * (q - 1);
+        for (e = 2; e < t; e++) {
+            if (gcd(e, t) == 1) {
+                break;
+            }
+        }
+        for (i = 0; i < 10; i++) {
+            x = 1 + i * t
+            if (x % e == 0) {
+                d = x / e;
+                break;
+            }
+        }
+        //var enc = PowerMod(no, e, n);
+        //console.log("encrypt: " + enc);
+        var res="";
+        for (var i = 0; i < no.length; i++) {
+            let c = PowerMod(no[i], e, n);
+            console.debug(c);
+            cadena.push(c);
+            let nnn = c.toString();
+            res = res + nnn;
+        }
+        console.log("this-> "+res);
+
+
+        document.getElementById('publickey(N)').innerHTML = "["+e+","+n+"]";
+        document.getElementById('exponent(e)').innerHTML = e;
+        document.getElementById('privatekey(d)').innerHTML = "["+d+","+n+"]";
+        //document.getElementById('ciphertext(ct)').innerHTML = enc;
+        document.getElementById('ciphertext(ct)').innerHTML = res;
+    }
+
+
+    function DEC(){
+        n = document.getElementById('nn').value;
+        //console.log("n: "+n);
+        d = document.getElementById('dd').value;
+        //console.log("d: "+d);
+        m = document.getElementById('msgs').value;
+        //console.log("m: "+m);
+        //var des = PowerMod(m, d, n);
+        //console.log(" resultado = ", des);
+
+
+
+        var res = "";
+        for (var i = 0; i < cadena.length; i++) {
+            let c = PowerMod(cadena[i], d, n);
+            console.debug(c);
+            let nnn = c.toString();
+            res = res + nnn;
+        }
+        console.log("this dec-> "+res);
+
+        document.getElementById('Deciphertext(ct)').innerHTML = res;
+        //document.getElementById('Deciphertext(ct)').innerHTML = des;
+    }
+</script>
+
+</html>
