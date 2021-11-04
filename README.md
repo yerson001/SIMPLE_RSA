@@ -11,4 +11,4 @@ En el siguiente trabajo implementamos el cifrado RSA para fines educativos, el l
 
 
 
-## Click aqui [DEMO](https://yerson001.github.io/LPgame/)
+## Click aqui [DEMO](https://yerson001.github.io/SIMPLE_RSA/)
